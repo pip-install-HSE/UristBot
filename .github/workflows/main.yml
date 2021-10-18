@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        - uses: actions/checkout@v2  
+      - uses: actions/checkout@v2  
   CodeStyle:
     runs-on: ubuntu-latest
     steps: 
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2  
       - name: Python Style Checker
         uses: andymckay/pycodestyle-action@0.1.3
 
