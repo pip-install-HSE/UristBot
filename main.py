@@ -124,6 +124,7 @@ async def select_document(message: types.Message, state: FSMContext):
     )
     await state.set_state(message.text)
 
+
 # Назад если выбрали документ
 @dp.callback_query_handler(text='◀️ Назад', state=documents)
 async def back_to_select_document(
@@ -140,6 +141,7 @@ async def back_to_select_document(
     )
     await state.set_state((await state.get_data())['action'])
 
+
 # Код если выбрали Документ
 @dp.callback_query_handler(text=documents, state=['📄 Документ'])
 async def select_contract(callback: types.CallbackQuery, state: FSMContext):
@@ -150,18 +152,17 @@ async def select_contract(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=types.InlineKeyboardMarkup(
             inline_keyboard=[
                 [types.InlineKeyboardButton(text=elem, callback_data=elem)]
-                for elem in contracts + ['◀️ Назад','⤴️ Главное меню']
+                for elem in contracts + ['◀️ Назад', '⤴️ Главное меню']
             ]
         ),
     )
-
-
     await state.set_state(callback.data)
 
 
 # Код если выбрались из контракта назад
 @dp.callback_query_handler(text='◀️ Назад', state=contracts)
-async def back_to_select_contract(callback: types.CallbackQuery, state: FSMContext):
+async def back_to_select_contract(callback: types.CallbackQuery,
+                                  state: FSMContext):
     await state.update_data(contract=None)
 
     await callback.message.edit_text(
@@ -176,7 +177,6 @@ async def back_to_select_contract(callback: types.CallbackQuery, state: FSMConte
     await state.set_state((await state.get_data())['document'])
 
 
-
 # Код если выбрали контракт (здесь надо дорабатывать)
 @dp.callback_query_handler(text=contracts, state=documents)
 async def select_forward(callback: types.CallbackQuery, state: FSMContext):
@@ -187,13 +187,11 @@ async def select_forward(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=types.InlineKeyboardMarkup(
             inline_keyboard=[
                 [types.InlineKeyboardButton(text=elem, callback_data=elem)]
-                for elem in ['◀️ Назад','⤴️ Главное меню']
+                for elem in ['◀️ Назад', '⤴️ Главное меню']
             ]
         ),
     )
     await state.set_state(callback.data)
-
-
 
 
 #Код, если выбрали ✊ Поддержка
@@ -242,6 +240,7 @@ async def support_message(message: types.Message, state: FSMContext):
              f"Текст вопроса: {message.text}",
         chat_id=id_chat_support
     )
+
 
 @dp.message_handler(lambda message: message.chat.id != message.from_user.id)
 async def chats_handler(message: types.Message):
