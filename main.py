@@ -67,7 +67,8 @@ async def main_menu(
 # Назад если мы нажали назад из  первого шага
 # '🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
 @dp.callback_query_handler(text='◀️ Назад',
-state=['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'])
+                state=['🤟 Профиль', '🔍 Искать статью',
+                       '📄 Документ', '✊ Поддержка'])
 async def back_to_main_menu(callback: types.CallbackQuery, state: FSMContext):
     await state.update_data(action=None)
     await callback.message.delete()
@@ -194,7 +195,7 @@ async def select_forward(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(callback.data)
 
 
-#Код, если выбрали ✊ Поддержка
+# Код, если выбрали ✊ Поддержка
 @dp.message_handler(Text(equals='✊ Поддержка'), state='*')
 async def support(message: types.Message, state: FSMContext):
     await state.update_data(action=message.text)
