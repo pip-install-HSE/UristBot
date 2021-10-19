@@ -16,9 +16,10 @@ from aiogram.types import InputFile
 
 print(os.getenv)
 
-questions = ['🤟 Профиль' ,'🔍 Искать статью' ,'📄 Документ' ,'✊ Поддержка']
+questions = ['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка']
 documents = ['Договор по оказанию работ']
-contracts = ['Договор по оказанию услуг' ,'Договор подряда' ,'Договор поручения']
+contracts = ['Договор по оказанию услуг',
+             'Договор подряда', 'Договор поручения']
 
 API_TOKEN = ''
 
@@ -63,8 +64,8 @@ async def main_menu(
     )
 
 
-#Назад если мы нажали назад из  первого шага
-#'🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
+# Назад если мы нажали назад из  первого шага
+# '🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
 @dp.callback_query_handler(text='◀️ Назад',
 state=['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'])
 async def back_to_main_menu(callback: types.CallbackQuery, state: FSMContext):
@@ -123,7 +124,7 @@ async def select_document(message: types.Message, state: FSMContext):
     )
     await state.set_state(message.text)
 
-#  Назад если выбрали документ
+# Назад если выбрали документ
 @dp.callback_query_handler(text='◀️ Назад', state=documents)
 async def back_to_select_document(
         callback: types.CallbackQuery, state: FSMContext):
@@ -230,7 +231,8 @@ async def enter_NO_back_to_mian_menu(callback: types.CallbackQuery,
 
 @dp.message_handler(state='📩 Поддержка')
 async def support_message(message: types.Message, state: FSMContext):
-    await main_menu(message, state, "Спасибо за обращение! Ответ придет в ближайшее время.")
+    await main_menu(message, state,
+                    "Спасибо за обращение! Ответ придет в ближайшее время.")
     user = message.from_user
     await bot.send_message(
         text=f"Имя пользователя: {user.first_name}"
@@ -249,7 +251,8 @@ async def chats_handler(message: types.Message):
                                  message.reply_to_message.text)[0]
             await bot.send_message(
                 chat_id=user_id,
-                text=f"<b>Ответ от менеджера</b> " + message.from_user.first_name
+                text=f"<b>Ответ от менеджера</b> "
+                     + message.from_user.first_name
                 + ' ' + message.from_user.last_name + ':' + '\n'
                 f"{message.text}",
                 parse_mode="HTML"
