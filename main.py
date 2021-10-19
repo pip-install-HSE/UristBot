@@ -16,9 +16,9 @@ from aiogram.types import InputFile
 
 print(os.getenv)
 
-questions = ['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка']
+questions = ['🤟 Профиль' ,'🔍 Искать статью' ,'📄 Документ' ,'✊ Поддержка']
 documents = ['Договор по оказанию работ']
-contracts = ['Договор по оказанию услуг','Договор подряда','Договор поручения']
+contracts = ['Договор по оказанию услуг' ,'Договор подряда' ,'Договор поручения']
 
 API_TOKEN = ''
 
@@ -44,7 +44,7 @@ async def soft_state_finish(state: FSMContext):
 async def main_menu(
         message: [types.Message, types.CallbackQuery], state: FSMContext,
         message_text='Добро пожаловать в Телеграм-бот для юристов!\n'
-                     'Выберите пункт меню:' ):
+                     'Выберите пункт меню:'):
     await soft_state_finish(state)
     await bot.send_message(
         chat_id=message.chat.id,
@@ -63,8 +63,10 @@ async def main_menu(
     )
 
 
-#  Назад если мы нажали назад из  первого шага '🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
-@dp.callback_query_handler(text='◀️ Назад', state=['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'])
+#Назад если мы нажали назад из  первого шага
+#'🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
+@dp.callback_query_handler(text='◀️ Назад',
+state=['🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'])
 async def back_to_main_menu(callback: types.CallbackQuery, state: FSMContext):
     await state.update_data(action=None)
     await callback.message.delete()
@@ -121,10 +123,6 @@ async def select_document(message: types.Message, state: FSMContext):
     )
     await state.set_state(message.text)
 
-
-
-
-
 #  Назад если выбрали документ
 @dp.callback_query_handler(text='◀️ Назад', state=documents)
 async def back_to_select_document(
@@ -140,11 +138,6 @@ async def back_to_select_document(
         ),
     )
     await state.set_state((await state.get_data())['action'])
-
-
-
-
-
 
 # Код если выбрали Документ
 @dp.callback_query_handler(text=documents, state=['📄 Документ'])
@@ -240,7 +233,8 @@ async def support_message(message: types.Message, state: FSMContext):
     await main_menu(message, state, "Спасибо за обращение! Ответ придет в ближайшее время.")
     user = message.from_user
     await bot.send_message(
-        text=f"Имя пользователя: {user.first_name} {user.last_name if 'last_name' in user else ''}\n"
+        text=f"Имя пользователя: {user.first_name}"
+             f" {user.last_name if 'last_name' in user else ''}\n"
              f"username:  @{user.username if 'username' in user else None}\n"
              f"id: {user.id}\n\n"
              f"Текст вопроса: {message.text}",
@@ -255,8 +249,9 @@ async def chats_handler(message: types.Message):
                                  message.reply_to_message.text)[0]
             await bot.send_message(
                 chat_id=user_id,
-                text=f"<b>Ответ от менеджера</b> " + message.from_user.first_name + ' ' + message.from_user.last_name + ':' + '\n'
-                                                                                                                              f"{message.text}",
+                text=f"<b>Ответ от менеджера</b> " + message.from_user.first_name
+                + ' ' + message.from_user.last_name + ':' + '\n'
+                f"{message.text}",
                 parse_mode="HTML"
             )
             await message.reply(
