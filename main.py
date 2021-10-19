@@ -66,9 +66,9 @@ async def main_menu(
 
 # Назад если мы нажали назад из  первого шага
 # '🤟 Профиль', '🔍 Искать статью', '📄 Документ', '✊ Поддержка'
-@dp.callback_query_handler(text='◀️ Назад',
-                state=['🤟 Профиль', '🔍 Искать статью',
-                       '📄 Документ', '✊ Поддержка'])
+@dp.callback_query_handler(
+    text='◀️ Назад',state=['🤟 Профиль',
+                           '🔍 Искать статью','📄 Документ', '✊ Поддержка'])
 async def back_to_main_menu(callback: types.CallbackQuery, state: FSMContext):
     await state.update_data(action=None)
     await callback.message.delete()
